@@ -26,7 +26,8 @@ class FullScreenView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.delete,color: Colors.white,),
             onPressed: () async {
-              _galleryService.deleteElement(photo.id);
+              //TODO: Delete image
+              // _galleryService.deleteElement(photo.id);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Deleted')));
               Future.delayed(Duration(milliseconds: 100));
               Navigator.pop(context);

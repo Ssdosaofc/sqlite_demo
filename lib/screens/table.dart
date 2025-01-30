@@ -26,7 +26,8 @@ class _TableWidgetState extends State<TableWidget> {
   @override
   void initState() {
     super.initState();
-    getList();
+    //TODO: Initialize list
+    // getList();
     _nameController = TextEditingController();
     _ageController = TextEditingController();
 
@@ -34,28 +35,20 @@ class _TableWidgetState extends State<TableWidget> {
     _editAgeController = TextEditingController();
   }
 
-  getList() async{
-    studentsList = [];
-    List students = await _tableService.readElements();
-    for (var student in students) {
-      setState(() {
-        var studentInstance = Student();
-        studentInstance.name = student['name'];
-        studentInstance.age = student['age'];
-        studentInstance.id = student['id'];
-        studentsList.add(studentInstance);
-      });
-    }
-  }
-
-  editElement(BuildContext context, id) async {
-    student = await _tableService.readElementById(id);
-    setState(() {
-      _editNameController.text = student[0]['name']??'No Name';
-      _editAgeController.text = student[0]['age'].toString();
-    });
-    showEditDialog(context);
-  }
+  //TODO: Load/Refresh list each time
+  // getList() async{
+  //   studentsList = [];
+  //   List students = await _tableService.readElements();
+  //   for (var student in students) {
+  //     setState(() {
+  //       var studentInstance = Student();
+  //       studentInstance.name = student['name'];
+  //       studentInstance.age = student['age'];
+  //       studentInstance.id = student['id'];
+  //       studentsList.add(studentInstance);
+  //     });
+  //   }
+  // }
 
   void _clear(){
     _nameController.clear();
@@ -64,149 +57,162 @@ class _TableWidgetState extends State<TableWidget> {
     _editAgeController.clear();
   }
 
-  showAddDialog(BuildContext context){
-    return showDialog(context: context, barrierDismissible: true, builder: (param){
-       return AlertDialog(
-         actions: [
-           TextButton(
-               onPressed: () async{
-                 try{
-                   _student.name = _nameController.text;
-                   _student.age = int.parse(_ageController.text);
-                   _student.id = await _tableService.insertElement(_student);;
-                   var result = _student.id;
+  //TODO: Add element
+  // showAddDialog(BuildContext context){
+  //   return showDialog(context: context, barrierDismissible: true, builder: (param){
+  //      return AlertDialog(
+  //        actions: [
+  //          TextButton(
+  //              onPressed: () async{
+  //                try{
+  //                  _student.name = _nameController.text;
+  //                  _student.age = int.parse(_ageController.text);
+  //                  _student.id = await _tableService.insertElement(_student);;
+  //                  var result = _student.id;
+  //
+  //                  if(result!>0) {
+  //                    _clear();
+  //                    Navigator.pop(context);
+  //                    getList();
+  //                  }
+  //                }catch(e){
+  //                  print(e);
+  //                }
+  //
+  //          }, child: Text('Add')),
+  //          TextButton(onPressed: (){
+  //            _clear();
+  //            Navigator.pop(context);
+  //          }, child: Text('Cancel')),
+  //        ],
+  //        title: Text('Add Element'),
+  //        content: SingleChildScrollView(
+  //          child: Column(
+  //            children: [
+  //              TextField(
+  //                controller: _nameController,
+  //                decoration: InputDecoration(
+  //                  hintText: "Enter name",
+  //                  labelText: "Name",
+  //                ),
+  //              ),
+  //              TextField(
+  //                controller: _ageController,
+  //                keyboardType: TextInputType.number,
+  //                decoration: InputDecoration(
+  //                  hintText: "Enter age",
+  //                  labelText: "Age",
+  //                ),
+  //              ),
+  //            ],
+  //          ),
+  //        ),
+  //      );
+  //   });
+  // }
 
-                   if(result!>0) {
-                     _clear();
-                     Navigator.pop(context);
-                     getList();
-                   }
-                 }catch(e){
-                   print(e);
-                 }
+  //TODO: Edit element
+  // editElement(BuildContext context, id) async {
+  //   student = await _tableService.readElementById(id);
+  //   setState(() {
+  //     _editNameController.text = student[0]['name']??'No Name';
+  //     _editAgeController.text = student[0]['age'].toString();
+  //   });
+  //   showEditDialog(context);
+  // }
 
-           }, child: Text('Add')),
-           TextButton(onPressed: (){
-             _clear();
-             Navigator.pop(context);
-           }, child: Text('Cancel')),
-         ],
-         title: Text('Add Element'),
-         content: SingleChildScrollView(
-           child: Column(
-             children: [
-               TextField(
-                 controller: _nameController,
-                 decoration: InputDecoration(
-                   hintText: "Enter name",
-                   labelText: "Name",
-                 ),
-               ),
-               TextField(
-                 controller: _ageController,
-                 keyboardType: TextInputType.number,
-                 decoration: InputDecoration(
-                   hintText: "Enter age",
-                   labelText: "Age",
-                 ),
-               ),
-             ],
-           ),
-         ),
-       );
-    });
-  }
+  // showEditDialog(BuildContext context){
+  //   return showDialog(context: context, barrierDismissible: true, builder: (param){
+  //     return AlertDialog(
+  //       actions: [
+  //         TextButton(
+  //             onPressed: () async{
+  //               try{
+  //                 _student.id = student[0]['id'];
+  //                 _student.name = _editNameController.text;
+  //                 _student.age = int.parse(_editAgeController.text);
+  //
+  //                 print(_student.studentMap());
+  //
+  //                 var result = await  _tableService.updateElement(_student);
+  //
+  //                 if(result>0) {
+  //                   _clear();
+  //                   Navigator.pop(context);
+  //                   getList();
+  //                 }
+  //               }catch(e){
+  //                 print(e);
+  //               }
+  //
+  //             }, child: Text('Update')),
+  //         TextButton(onPressed: (){
+  //           _clear();
+  //           Navigator.pop(context);
+  //         }, child: Text('Cancel')),
+  //       ],
+  //       title: Text('Edit Element'),
+  //       content: SingleChildScrollView(
+  //         child: Column(
+  //           children: [
+  //             TextField(
+  //               controller: _editNameController,
+  //               decoration: InputDecoration(
+  //                 hintText: "Edit name",
+  //                 labelText: "Name",
+  //               ),
+  //             ),
+  //             TextField(
+  //               controller: _editAgeController,
+  //               keyboardType: TextInputType.number,
+  //               decoration: InputDecoration(
+  //                 hintText: "Edit age",
+  //                 labelText: "Age",
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+  //   });
+  // }
 
-  showEditDialog(BuildContext context){
-    return showDialog(context: context, barrierDismissible: true, builder: (param){
-      return AlertDialog(
-        actions: [
-          TextButton(
-              onPressed: () async{
-                try{
-                  _student.id = student[0]['id'];
-                  _student.name = _editNameController.text;
-                  _student.age = int.parse(_editAgeController.text);
-
-                  print(_student.studentMap());
-
-                  var result = await  _tableService.updateElement(_student);
-
-                  if(result>0) {
-                    _clear();
-                    Navigator.pop(context);
-                    getList();
-                  }
-                }catch(e){
-                  print(e);
-                }
-
-              }, child: Text('Update')),
-          TextButton(onPressed: (){
-            _clear();
-            Navigator.pop(context);
-          }, child: Text('Cancel')),
-        ],
-        title: Text('Edit Element'),
-        content: SingleChildScrollView(
-          child: Column(
-            children: [
-              TextField(
-                controller: _editNameController,
-                decoration: InputDecoration(
-                  hintText: "Edit name",
-                  labelText: "Name",
-                ),
-              ),
-              TextField(
-                controller: _editAgeController,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  hintText: "Edit age",
-                  labelText: "Age",
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-
-  showDeleteDialog(BuildContext context, id){
-    return showDialog(context: context, barrierDismissible: true, builder: (param){
-      return AlertDialog(
-        actions: [
-          TextButton(
-              onPressed: () async{
-                try{
-
-                  var result = await  _tableService.deleteElement(id);
-
-                  if(result>0) {
-                    Navigator.pop(context);
-                    getList();
-                  }
-                }catch(e){
-                  print(e);
-                }
-
-              }, child: Text('Delete')),
-          TextButton(onPressed: (){
-            Navigator.pop(context);
-          }, child: Text('Cancel')),
-        ],
-        title: Text('Delete Element'),
-        content: Text('Are you sure you want to delete button?'),
-      );
-    });
-  }
+  //TODO: Delete element
+  // showDeleteDialog(BuildContext context, id){
+  //   return showDialog(context: context, barrierDismissible: true, builder: (param){
+  //     return AlertDialog(
+  //       actions: [
+  //         TextButton(
+  //             onPressed: () async{
+  //               try{
+  //
+  //                 var result = await  _tableService.deleteElement(id);
+  //
+  //                 if(result>0) {
+  //                   Navigator.pop(context);
+  //                   getList();
+  //                 }
+  //               }catch(e){
+  //                 print(e);
+  //               }
+  //
+  //             }, child: Text('Delete')),
+  //         TextButton(onPressed: (){
+  //           Navigator.pop(context);
+  //         }, child: Text('Cancel')),
+  //       ],
+  //       title: Text('Delete Element'),
+  //       content: Text('Are you sure you want to delete button?'),
+  //     );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
-        showAddDialog(context);
+        //TODO: Implement add function
+        // showAddDialog(context);
       },
         child: Icon(Icons.add),
       ),
@@ -220,14 +226,16 @@ class _TableWidgetState extends State<TableWidget> {
               padding: const EdgeInsets.only(bottom: 8.0),
               child: ListTile(
                 leading: IconButton(onPressed: (){
-                  editElement(context, studentsList[index].id);
+                  //TODO: Implement edit function
+                  // editElement(context, studentsList[index].id);
                 }, icon: Icon(Icons.edit)),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(studentsList[index].name),
                     IconButton(onPressed: (){
-                      showDeleteDialog(context,studentsList[index].id);
+                      //TODO: Implement delete function
+                      // showDeleteDialog(context,studentsList[index].id);
                     }, icon: Icon(Icons.delete))
                   ],
                 ),
